@@ -10,25 +10,21 @@ interface VideoEmbedProps {
 }
 
 export default function VideoEmbed({ video }: VideoEmbedProps) {
-  const hasTrackedPlay = useRef(false);
+  const iframeLoaded = useRef(false);
 
+  // Track video as "played" after 5 seconds of viewing
   useEffect(() => {
-    // Reset tracking when video changes
-    hasTrackedPlay.current = false;
+    iframeLoaded.current = false;
+
+    const timeoutId = setTimeout(() => {
+      updateVideoReason(video.id, 'played');
+    }, 5000);
+
+    return () => clearTimeout(timeoutId);
   }, [video.id]);
 
   const handleIframeLoad = () => {
-    // We can't directly detect play events from YouTube iframe without the API
-    // So we'll mark as "played" after a brief delay when the user is viewing it
-    // A more sophisticated implementation would use the YouTube IFrame API
-    if (!hasTrackedPlay.current) {
-      hasTrackedPlay.current = true;
-      // Mark as played after 5 seconds of viewing
-      const timeoutId = setTimeout(() => {
-        updateVideoReason(video.id, 'played');
-      }, 5000);
-      return () => clearTimeout(timeoutId);
-    }
+    iframeLoaded.current = true;
   };
 
   return (

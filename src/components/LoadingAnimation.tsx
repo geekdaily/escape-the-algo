@@ -5,17 +5,14 @@ import styles from './LoadingAnimation.module.css';
 
 interface LoadingAnimationProps {
   onTimeout?: () => void;
-  minDuration?: number;
   maxDuration?: number;
 }
 
 export default function LoadingAnimation({
   onTimeout,
-  minDuration = 2000,
   maxDuration = 15000,
 }: LoadingAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const startTimeRef = useRef<number>(Date.now());
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -28,6 +25,8 @@ export default function LoadingAnimation({
     const resize = () => {
       canvas.width = canvas.offsetWidth * window.devicePixelRatio;
       canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+      // Reset transformation matrix before scaling to prevent compounding
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     };
     resize();

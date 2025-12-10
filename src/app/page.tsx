@@ -13,18 +13,16 @@ export default function Home() {
   const [state, setState] = useState<AppState>('loading');
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const [location, setLocation] = useState<GeoLocation | null>(null);
-  const [loadingStartTime, setLoadingStartTime] = useState<number>(Date.now());
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const findVideo = useCallback(async (geo: GeoLocation, additionalExcluded: string[] = []) => {
     const startTime = Date.now();
-    setLoadingStartTime(startTime);
     setState('loading');
 
     const excludedIds = [...getExcludedVideoIds(), ...additionalExcluded];
     let radius = 10;
 
-    while (radius !== null && radius <= 1000) {
+    while (radius <= 1000) {
       try {
         const params = new URLSearchParams({
           latitude: geo.latitude.toString(),

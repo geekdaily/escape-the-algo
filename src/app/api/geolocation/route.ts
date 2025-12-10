@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     if (!ip || ip === '127.0.0.1' || ip === '::1') {
       // Use ip-api.com to get location based on the server's outgoing IP
       // This will at least work for deployed environments
+      // Note: Free tier only supports HTTP (see comment below for details)
       const response = await fetch('http://ip-api.com/json/?fields=status,lat,lon,city,regionName,country');
       const data = await response.json();
 
@@ -37,6 +38,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Use ip-api.com for geolocation (free, no API key required)
+    // Note: ip-api.com free tier only supports HTTP. This is acceptable here because:
+    // 1. This runs server-side, so no browser mixed-content issues
+    // 2. We're only getting approximate location data, not sensitive info
+    // For production with stricter requirements, consider ip-api.com Pro (HTTPS)
+    // or alternative services like ipapi.co or ipgeolocation.io
     const response = await fetch(
       `http://ip-api.com/json/${ip}?fields=status,message,lat,lon,city,regionName,country`
     );

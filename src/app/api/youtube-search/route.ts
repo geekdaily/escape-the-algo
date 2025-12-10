@@ -18,8 +18,9 @@ export async function GET(request: NextRequest) {
 
   const apiKey = process.env.YOUTUBE_API_KEY;
   if (!apiKey) {
+    console.error('YouTube API key not configured');
     return NextResponse.json(
-      { videos: [], error: 'YouTube API key not configured' } as YouTubeSearchResponse,
+      { videos: [], error: 'Service temporarily unavailable' } as YouTubeSearchResponse,
       { status: 500 }
     );
   }
@@ -42,7 +43,7 @@ export async function GET(request: NextRequest) {
     if (data.error) {
       console.error('YouTube API error:', data.error);
       return NextResponse.json(
-        { videos: [], error: data.error.message } as YouTubeSearchResponse,
+        { videos: [], error: 'Failed to fetch videos' } as YouTubeSearchResponse,
         { status: 500 }
       );
     }
