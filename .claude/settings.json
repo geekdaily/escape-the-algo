@@ -4,6 +4,10 @@
       {
         "hooks": [
           {
+              "type": "command",
+              "command": "git submodule update --init --recursive"
+          },
+          {
             "type": "prompt",
             "prompt": "Read and follow instructions from .claude/skills/superpowers/skills/using-superpowers/SKILL.md in the project directory"
           }
