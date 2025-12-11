@@ -2,10 +2,12 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Video, GeoLocation } from '@/types';
-import { addExcludedVideo, getExcludedVideoIds } from '@/lib/storage';
+import { addToHistory, getExcludedVideoIds } from '@/lib/storage';
 import { selectRandomVideo, getNextRadius, formatRadius } from '@/lib/videoSelection';
 import LoadingAnimation from '@/components/LoadingAnimation';
 import VideoEmbed from '@/components/VideoEmbed';
+import ControlBar from '@/components/ControlBar';
+import HistoryPanel from '@/components/HistoryPanel';
 
 type AppState = 'loading' | 'video' | 'error' | 'timeout' | 'nothing-found';
 
@@ -14,6 +16,7 @@ export default function Home() {
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const [location, setLocation] = useState<GeoLocation | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [historyOpen, setHistoryOpen] = useState(false);
 
   const findVideo = useCallback(async (geo: GeoLocation, additionalExcluded: string[] = []) => {
     const startTime = Date.now();
@@ -50,7 +53,7 @@ export default function Home() {
             const minWait = Math.max(0, 2000 - elapsed);
 
             setTimeout(() => {
-              addExcludedVideo(video.id, 'offered');
+              addToHistory(video, 'offered');
               setCurrentVideo(video);
               setState('video');
             }, minWait);
@@ -175,11 +178,10 @@ export default function Home() {
         </div>
 
         {state === 'video' && currentVideo && (
-          <div className="actions">
-            <button className="show-another" onClick={handleShowAnother}>
-              Show me another
-            </button>
-          </div>
+          <ControlBar
+            onShowAnother={handleShowAnother}
+            onOpenHistory={() => setHistoryOpen(true)}
+          />
         )}
       </main>
 
@@ -201,6 +203,11 @@ export default function Home() {
           </a>
         </p>
       </footer>
+
+      <HistoryPanel
+        isOpen={historyOpen}
+        onClose={() => setHistoryOpen(false)}
+      />
     </div>
   );
 }
