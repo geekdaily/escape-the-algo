@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Read and follow instructions from .claude/skills/superpowers/skills/using-superpowers/SKILL.md in the project directory"
+          }
+        ]
+      }
+    ]
+  }
+}
