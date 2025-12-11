@@ -2,8 +2,18 @@ export interface Video {
   id: string;
   title: string;
   channelTitle: string;
+  channelId: string;
   publishedAt: string;
   thumbnailUrl: string;
+}
+
+export interface HistoryEntry {
+  id: string;
+  title: string;
+  channelTitle: string;
+  channelId: string;
+  reason: ExclusionReason;
+  timestamp: number;
 }
 
 export type ExclusionReason = 'offered' | 'played';

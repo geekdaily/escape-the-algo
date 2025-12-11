@@ -55,6 +55,7 @@ export async function GET(request: NextRequest) {
         id: item.id.videoId,
         title: item.snippet.title,
         channelTitle: item.snippet.channelTitle,
+        channelId: item.snippet.channelId,
         publishedAt: item.snippet.publishedAt,
         thumbnailUrl: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.default?.url,
       }));
