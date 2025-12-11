@@ -31,7 +31,7 @@ export default function VideoEmbed({ video }: VideoEmbedProps) {
     <div className={styles.container}>
       <iframe
         className={styles.iframe}
-        src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0`}
+        src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&playsinline=1`}
         title={video.title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
